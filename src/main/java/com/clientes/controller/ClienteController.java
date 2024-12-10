@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.clientes.model.entity.Cliente;
 import com.clientes.repository.ClienteRepository;
+import com.clientes.repository.ServicoRepository;
 
 import jakarta.validation.Valid;
 
@@ -29,8 +30,12 @@ public class ClienteController {
 	private final ClienteRepository clienteRepository;
 	
 	@Autowired
-	public ClienteController(ClienteRepository clienteRepository) {
+	private final ServicoRepository servicoRepository;
+	
+	@Autowired
+	public ClienteController(ClienteRepository clienteRepository, ServicoRepository servicoRepository) {
 		this.clienteRepository = clienteRepository;
+		this.servicoRepository = servicoRepository;
 	}
 	
 	@PostMapping
@@ -58,6 +63,7 @@ public class ClienteController {
 		clienteRepository
 				.findById(id)
 				.map(cliente -> {
+	                servicoRepository.deleteAllByClienteId(cliente.getId());
 					clienteRepository.delete(cliente);
 					return Void.TYPE;
 				})

@@ -26,13 +26,19 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/servicos-prestados")
 public class ServicoPrestadoController {
 	
 	private final ServicoRepository servicoRepository;
 	private final ClienteRepository clienteRepository;
 	private final BigDecimalConverter bigDecimalConverter;
+
+	public ServicoPrestadoController(ServicoRepository servicoRepository, ClienteRepository clienteRepository,
+			BigDecimalConverter bigDecimalConverter) {
+		this.servicoRepository = servicoRepository;
+		this.clienteRepository = clienteRepository;
+		this.bigDecimalConverter = bigDecimalConverter;
+	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

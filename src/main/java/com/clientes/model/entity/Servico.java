@@ -15,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Entity
-@Data
 public class Servico {
 
 	@Id
@@ -35,5 +34,47 @@ public class Servico {
 	@Column
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate data;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
+	public LocalDate getData() {
+		return data;
+	}
+
+	public void setData(LocalDate data) {
+		this.data = data;
+	}
+	
+	
 	
 }
