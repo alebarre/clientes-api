@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.clientes.model.entity.Cliente;
+import com.clientes.model.entity.Endereco;
 import com.clientes.repository.ClienteRepository;
+import com.clientes.repository.EnderecoRepository;
 import com.clientes.repository.ServicoRepository;
 
 import jakarta.validation.Valid;
@@ -33,15 +34,26 @@ public class ClienteController {
 	private final ServicoRepository servicoRepository;
 	
 	@Autowired
-	public ClienteController(ClienteRepository clienteRepository, ServicoRepository servicoRepository) {
+	private final EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	public ClienteController(ClienteRepository clienteRepository, ServicoRepository servicoRepository, EnderecoRepository enderecoRepository) {
 		this.clienteRepository = clienteRepository;
 		this.servicoRepository = servicoRepository;
+		this.enderecoRepository = enderecoRepository;
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente salvar(@RequestBody @Valid Cliente cliente) {
-		return clienteRepository.save(cliente);
+		
+	    if (cliente.getEndereco() != null && !cliente.getEndereco().isEmpty()) {
+	    cliente.getEndereco().forEach(item -> item.setCliente(cliente));
+	        return clienteRepository.save(cliente);
+	    } else {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao salvar o Endereço. 🙁");
+	    }
+	    
 	}
 	
 	@GetMapping()
@@ -72,15 +84,15 @@ public class ClienteController {
 	
 	@PutMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void atualizar (@PathVariable Integer id, @RequestBody @Valid Cliente clienteAtualizado) {
-		clienteRepository
-		.findById(id)
-		.map(cliente -> {
-			cliente.setNome(clienteAtualizado.getNome());
-			cliente.setCpf(clienteAtualizado.getCpf());
-			return clienteRepository.save(clienteAtualizado);
-		})
-		.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	public Cliente atualizar (@PathVariable Integer id, @RequestBody @Valid Cliente clienteAtualizado) {
+		
+		if (clienteAtualizado.getEndereco() != null && !clienteAtualizado.getEndereco().isEmpty()) {
+			clienteAtualizado.getEndereco().forEach(item -> item.setCliente(clienteAtualizado));
+		        return clienteRepository.save(clienteAtualizado);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Necessário cadastrar o Endereço.");
+		}
+		
 	}
 	
 }

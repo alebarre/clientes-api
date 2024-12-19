@@ -3,10 +3,13 @@ package com.clientes.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,22 +23,24 @@ import com.clientes.model.entity.Cliente;
 import com.clientes.model.entity.Servico;
 import com.clientes.repository.ClienteRepository;
 import com.clientes.repository.ServicoRepository;
+import com.clientes.service.ServicoPrestadoService;
 import com.clientes.util.BigDecimalConverter;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/servicos-prestados")
 public class ServicoPrestadoController {
 	
 	private final ServicoRepository servicoRepository;
+	private final ServicoPrestadoService servicoPrestadoService; 
 	private final ClienteRepository clienteRepository;
 	private final BigDecimalConverter bigDecimalConverter;
 
 	public ServicoPrestadoController(ServicoRepository servicoRepository, ClienteRepository clienteRepository,
-			BigDecimalConverter bigDecimalConverter) {
+			BigDecimalConverter bigDecimalConverter, ServicoPrestadoService servicoPrestadoService) {
 		this.servicoRepository = servicoRepository;
+		this.servicoPrestadoService = servicoPrestadoService;
 		this.clienteRepository = clienteRepository;
 		this.bigDecimalConverter = bigDecimalConverter;
 	}
