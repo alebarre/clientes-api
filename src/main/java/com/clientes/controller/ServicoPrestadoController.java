@@ -52,7 +52,7 @@ public class ServicoPrestadoController {
 		Integer idCliente = dto.getIdCliente();
 		
 		Cliente cliente = clienteRepository.findById(idCliente)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inexistente"));
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inexistente. 😒" ));
 		
 		Servico servico = new Servico();
 		

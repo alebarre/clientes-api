@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -24,6 +25,7 @@ public class Servico {
 	private Integer id;
 	
 	@Column(nullable = false, length = 150)
+	@NotNull(message = "{campo.descricao.obrigatorio}")
 	private String descricao;
 	
 	@ManyToOne
@@ -31,9 +33,11 @@ public class Servico {
 	private Cliente cliente;
 	
 	@Column
+	@NotNull(message = "{campo.preco.obrigatorio}")
 	private BigDecimal valor;
 	
 	@Column
+	@NotNull(message = "{campo.data.obrigatorio}")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate data;
 
