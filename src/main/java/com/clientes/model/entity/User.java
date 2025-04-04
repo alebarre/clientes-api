@@ -19,9 +19,13 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tb_users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id

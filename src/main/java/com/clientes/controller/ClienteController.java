@@ -46,16 +46,17 @@ public class ClienteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente salvar(@RequestBody @Valid Cliente cliente) {
-		
-	    if (cliente.getEndereco() != null && !cliente.getEndereco().isEmpty()) {
-	    cliente.getEndereco().forEach(item -> item.setCliente(cliente));
-	        return clienteRepository.save(cliente);
-	    } else {
-	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao salvar o Endereço. 🙁");
+	    try {
+	        if (cliente.getEndereco() != null && !cliente.getEndereco().isEmpty()) {
+				cliente.getEndereco().forEach(item -> item.setCliente(cliente));
+				return clienteRepository.save(cliente);
+			} 
+	    } catch (Exception e) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao salvar o Cliente. 🙁", e);
 	    }
-	    
+	    return null;
 	}
-	
+
 	@GetMapping()
 	@ResponseStatus(HttpStatus.OK)
 	public List<Cliente> listarTodos () {
